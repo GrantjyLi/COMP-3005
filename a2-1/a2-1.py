@@ -1,10 +1,8 @@
 #pip3 install psycopg2-binary
-import psycopg2
-import os
-from init import initQuery
+import psycopg2 # library to interact with postgresql
+from queries import * # get functions that make queries
 
-#getting database password
-dbPW = os.getenv("databasePW")
+dbPW = "" #your postgresql password
 
 #creating connection to local postgresql database and cursor to execute queries
 connection = psycopg2.connect(host = "localhost", dbname = "a2-1", user = "postgres", password = dbPW, port = "5432")
@@ -14,8 +12,8 @@ cursor = connection.cursor()
 def control():
     initialize()
 
-    choice = -1
-    while choice != 0:
+    while True:
+        #displaying menu and then getting a valid input
         print("\nMenu:")
         print("1) Get all students.")
         print("2) Add a student.")
@@ -28,80 +26,70 @@ def control():
             choice = int(input("Enter menu input: "))
         
         print("")
+
+        #if statment calls whatever function corresponding to user input
+        #inputs are also collected for some functions
         if choice == 0:
             print("Exiting...")
             break
 
         elif choice ==1:
-            getAllStudents()
+            menu1()
 
         elif choice ==2:
             fn = input("Enter first name: ")
             ln = input("Enter last name: ")
             em = input("Enter email: ")
             ed = input("Enter enrollment date (yyyy-mm-dd): ")
-            addStudent(fn, ln, em, ed)
+            menu2(fn, ln, em, ed)
 
         elif choice ==3:
             sid = int(input("Enter student Id: "))
             em = input("Enter updated email: ")
-            updateStudentEmail(sid, em)
+            menu3(sid, em)
 
         elif choice ==4:
             sid = int(input("Enter student Id: "))
-            deleteStudent(sid)
+            menu4(sid)
 
 #function to initialize database if user wants to
 def initialize():
-    choice = "0"
+    choice = "0" #getting valid user input
     while choice != "Y" and choice != "y" and choice != "N" and choice != "n":
         choice = input("Do you want to start from a clean table (y), or continue with last values (n): ")
     
     if choice == "Y" or choice == "y":
         global cursor
+        #executes a query that creates a clean table with default data if user wants to
         cursor.execute(initQuery())   
 
 #function to print out all students
-def getAllStudents():
+def menu1():
     global cursor
-    query = """
-    select * from students;
-    """
-
+    query = getAllStudents()
     cursor.execute(query)
+    print("Students: ")
     for t in cursor.fetchall():
         print(t)
 
 #function to add a student
-def addStudent(first_name, last_name, email, enrollment_date):
+def menu2(first_name, last_name, email, enrollment_date):
     global cursor
-    query = f"""
-    insert into students (first_name, last_name, email, enrollment_date) values
-    ('{first_name}', '{last_name}', '{email}', '{enrollment_date}');
-    """
-    #building a query with parameters and then executing it
+    query = addStudent(first_name, last_name, email, enrollment_date)
     cursor.execute(query)
     print("Student added")
 
 #function to update student email
-def updateStudentEmail(student_id, new_email):
+def menu3(student_id, new_email):
     global cursor
-    query = f"""
-    update students
-    set email = '{new_email}'
-    where student_id = {student_id};
-    """
-
+    query = updateStudentEmail(student_id, new_email)
     cursor.execute(query)
     print("Student email updated")
 
 #function to delete student
-def deleteStudent(student_id):
+def menu4(student_id):
     global cursor
-    query = f"""
-    delete from students where student_id = {student_id};
-    """
-
+    query = deleteStudent(student_id)
     cursor.execute(query)
     print("Student deleted")
 
