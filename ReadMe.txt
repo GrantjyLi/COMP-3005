@@ -1,10 +1,11 @@
 Grant Li - #101258982
 
 Instructions:
-1) in line 5 of "a2-1.py", input your own database password
-2) run the "a2-1.py" program
-3) choose menu options
-4) for menu & student Id options, enter numbers only
+1) go into a2-1
+2) in line 5 of "a2-1.py", input your own database password
+3) run the "a2-1.py" program
+4) choose menu options
+5) for menu & student Id options, enter numbers only
 
 Notes**:
 - The "queries.py" file creates all database queries that "a2-1.py" executes.
