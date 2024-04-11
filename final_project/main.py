@@ -1,5 +1,5 @@
 import psycopg2 # library to interact with postgresql
-from queries import * 
+from Member_Interface import * 
 
 dbPW = "heying" #your postgresql password
 
@@ -28,36 +28,54 @@ def control():
     print("closing program...")
 
 def memberInterface():
-    mId = login()
+    mid = login()
+
+    name = getUserName(mid, "member", cursor)
+    print("Welcome back " + name)
+
     choice = memberMenu()
 
     if choice ==1:
-
+        updateUsername(mid, cursor)
     elif choice ==2:
+        viewWeightGoal(mid, cursor)
     elif choice ==3:
+        updateWeightGoal(mid, cursor)
     elif choice ==4:
+        viewHealthMetrics(mid, cursor)
     elif choice ==5:
+        addHealthMetric(mid, cursor)
     elif choice ==6:
+        deleteHealthMetric(mid, cursor)
     elif choice ==7:
+        viewGoals(mid, cursor)
     elif choice ==8:
+        addGoal(mid, cursor)
     elif choice ==9:
+        deleteGoal(mid, cursor)
     elif choice ==10:
+        viewExercises(mid, cursor)
     elif choice ==11:
+        addExercise(mid, cursor)
     elif choice ==12:
+        deleteExercise(mid, cursor)
     elif choice ==13:
+        viewAvailableSessions(cursor)
     elif choice ==14:
+        viewPTSessions(mid)
     elif choice ==15:
+        bookPTSession(mid, cursor)
     elif choice ==16:
-    elif choice ==17
+        leavePTSession(mid, cursor)
+    elif choice ==17:
+        viewClasses(cursor)
     elif choice ==18:
+        viewEnrolledClasses(mid, cursor)
     elif choice ==19:
+        joinClass(mid, cursor)
     elif choice ==20:
-    else:
+        leaveClass(mid, cursor)
 
-
-
-
-    
 
 # def trainerInterface():
 # def adminInterface():
@@ -72,24 +90,16 @@ def login():
     
     mID = -1
     if choice == 1:
-        cursor.execute(checkUser(mID, "member"))
 
-        while cursor.fetchone()[0] == False:
+        while checkUser(mID, "member", cursor) == False:
             mID = int(input("Enter valid member ID#: "))
-            cursor.execute(checkUser(mID, "member"))
-
-        cursor.execute(getUserName(mID, "member"))
-
-        print("Welcome back " + cursor.fetchone()[1])
     else:
         username = input("Enter new username: ")
         weightGoal = int(input("Enter weight goal (lbs): "))
         goalDate = input("Enter weight goal date (yyyy-mm-dd): ")
 
-        cursor.execute(addMember(username, weightGoal, goalDate))
-        cursor.execute(getUserID(username, "member"))
-
-        mID = cursor.fetchone()[0]
+        addMember(username, weightGoal, goalDate, cursor)
+        mID = getUserID(username, "member", cursor)
     
     return mID
 
@@ -100,30 +110,30 @@ def memberMenu():
     print("2. View Weight Goal")
     print("3. Update Weight Goal")
 
-    print("5. View Health Metrics")
-    print("6. Add Health Metric")
-    print("7. Delete Health Metric\n")
+    print("4. View Health Metrics")
+    print("5. Add Health Metric")
+    print("6. Delete Health Metric\n")
 
-    print("8. View Goals")
-    print("9. Add Goals")
-    print("10. Delete Goals\n")
+    print("7. View Goals")
+    print("8. Add Goals")
+    print("9. Delete Goals\n")
 
-    print("11. View Exercises")
-    print("12. Add Exercise")
-    print("13. Delete Exercise\n")
+    print("10. View Exercises")
+    print("11. Add Exercise")
+    print("12. Delete Exercise\n")
 
-    print("14. View available PT-Sessions")
-    print("15. View Your PT-Sessions")
-    print("16. Book a PT-Session")
-    print("17. Leave a PT-Session\n")
+    print("13. View available PT-Sessions")
+    print("14. View Your PT-Sessions")
+    print("15. Book a PT-Session")
+    print("16. Leave a PT-Session\n")
 
-    print("18. View available Fitness Classes")
-    print("19. View Your Fitness Classes")
-    print("20. Enter A Fitness Class")
-    print("21. Leave a Fitness Class\n")
+    print("17. View available Fitness Classes")
+    print("18. View Your Fitness Classes")
+    print("19. Join A Fitness Class")
+    print("20. Leave a Fitness Class\n")
 
     choice =0
-    while choice < 1 and choice > 21:
+    while choice < 1 or choice > 21:
         choice = int(input("Enter a valid choice: "))
 
     return choice

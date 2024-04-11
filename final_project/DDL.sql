@@ -53,7 +53,7 @@ create table Fitness_Class(
 	trainer_id int references Trainers(trainer_id),
 	class_name varchar(255) not null,
 	class_time date not null,
-	member_names varchar(255)[]
+	member_ids int[]
 );
 
 create table Equipment(

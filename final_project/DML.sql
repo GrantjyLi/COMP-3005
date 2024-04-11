@@ -54,10 +54,10 @@ values
 	(2, 2, '2026-10-18')
 ;
 
-insert into fitness_classes(class_name, trainer_id, class_time, member_names)
+insert into fitness_classes(class_name, trainer_id, class_time, member_ids)
 values
-	('calisthenics', 2, '2025-01-01', array['m1']),
-	('pilates', 2, '2024-04-20', array['m1', 'm2'])
+	('calisthenics', 2, '2025-01-01', array[1]),
+	('pilates', 2, '2024-04-20', array[1, 2])
 ;
 
 insert into billings(member_id, amount, bill_date, description)
