@@ -10,7 +10,7 @@ values
 	('t2')
 ;
 
-insert into administrators(username)
+insert into admins(username)
 values
 	('a1')
 ;

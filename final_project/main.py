@@ -1,5 +1,6 @@
 import psycopg2 # library to interact with postgresql
-from Member_Interface import * 
+from Member_Interface import *
+from Trainer_Interface import *
 
 dbPW = "heying" #your postgresql password
 
@@ -28,59 +29,129 @@ def control():
     print("closing program...")
 
 def memberInterface():
-    mid = login()
+    global cursor
+    mid = memberLogin()
 
     name = getUserName(mid, "member", cursor)
     print("Welcome back " + name)
 
-    choice = memberMenu()
+    printMemberMenu()
+    while True:
 
-    if choice ==1:
-        updateUsername(mid, cursor)
-    elif choice ==2:
-        viewWeightGoal(mid, cursor)
-    elif choice ==3:
-        updateWeightGoal(mid, cursor)
-    elif choice ==4:
-        viewHealthMetrics(mid, cursor)
-    elif choice ==5:
-        addHealthMetric(mid, cursor)
-    elif choice ==6:
-        deleteHealthMetric(mid, cursor)
-    elif choice ==7:
-        viewGoals(mid, cursor)
-    elif choice ==8:
-        addGoal(mid, cursor)
-    elif choice ==9:
-        deleteGoal(mid, cursor)
-    elif choice ==10:
-        viewExercises(mid, cursor)
-    elif choice ==11:
-        addExercise(mid, cursor)
-    elif choice ==12:
-        deleteExercise(mid, cursor)
-    elif choice ==13:
-        viewAvailableSessions(cursor)
-    elif choice ==14:
-        viewPTSessions(mid)
-    elif choice ==15:
-        bookPTSession(mid, cursor)
-    elif choice ==16:
-        leavePTSession(mid, cursor)
-    elif choice ==17:
-        viewClasses(cursor)
-    elif choice ==18:
-        viewEnrolledClasses(mid, cursor)
-    elif choice ==19:
-        joinClass(mid, cursor)
-    elif choice ==20:
-        leaveClass(mid, cursor)
+        choice = -1 
+        while choice < 0 or choice > 20:
+            choice = int(input("Enter a valid choice: "))
+    
+        if choice ==0:
+            print("Exiting Members menu\n")
+            break
+        elif choice ==1:
+            updateUsername(mid, cursor)
+        elif choice ==2:
+            viewWeightGoal(mid, cursor)
+        elif choice ==3:
+            updateWeightGoal(mid, cursor)
+        elif choice ==4:
+            viewHealthMetrics(mid, cursor)
+        elif choice ==5:
+            addHealthMetric(mid, cursor)
+        elif choice ==6:
+            deleteHealthMetric(mid, cursor)
+        elif choice ==7:
+            viewGoals(mid, cursor)
+        elif choice ==8:
+            addGoal(mid, cursor)
+        elif choice ==9:
+            deleteGoal(mid, cursor)
+        elif choice ==10:
+            viewExercises(mid, cursor)
+        elif choice ==11:
+            addExercise(mid, cursor)
+        elif choice ==12:
+            deleteExercise(mid, cursor)
+        elif choice ==13:
+            viewAvailableSessions(cursor)
+        elif choice ==14:
+            viewPTSessions(mid)
+        elif choice ==15:
+            bookPTSession(mid, cursor)
+        elif choice ==16:
+            leavePTSession(mid, cursor)
+        elif choice ==17:
+            viewClasses(cursor)
+        elif choice ==18:
+            viewEnrolledClasses(mid, cursor)
+        elif choice ==19:
+            joinClass(mid, cursor)
+        elif choice ==20:
+            leaveClass(mid, cursor)
+        else:
+            printMemberMenu()
+
+def trainerInterface():
+    global cursor
+
+    tid = -1
+    while checkUser(tid, "trainer", cursor) == False:
+        tid = int(input("Enter valid trainer ID#: "))
+
+    cursor.execute(f"select username from trainers where trainer_id = {tid}")
+    print(f"Welcome back {cursor.fetchone()[0]}\n")
+
+    printTrainerMenu()
+
+    while True:
+        
+        choice = -1 
+        while choice < 0 or choice > 5:
+            choice = int(input("Enter a valid choice: "))
+
+        if choice ==0:
+            print("Exiting Trainer Menu\n")
+            return
+        elif choice ==1:
+            viewAllMembers(cursor)
+        elif choice ==2:
+            viewMembersID(cursor)
+        elif choice ==3:
+            viewMembersNames(cursor)
+        elif choice ==4:
+            addSession(tid, cursor)
+        else:
+            removeSession(tid, cursor)
 
 
-# def trainerInterface():
-# def adminInterface():
+def adminInterface():
+    global cursor
 
-def login():
+    aid = -1
+    while checkUser(aid, "admin", cursor) == False:
+        aid = int(input("Enter valid admin ID#: "))
+
+    cursor.execute(f"select username from admins where admin_id = {aid}")
+    print(f"Welcome back {cursor.fetchone()[0]}\n")
+
+    printAdminMenu() 
+
+    while True:
+        
+        choice = -1 
+        while choice < 0 or choice > 5:
+            choice = int(input("Enter a valid choice: ")) 
+        
+        if choice ==0:
+            print("Exiting Admin Menu\n")
+            return
+        elif choice ==1:
+        elif choice ==2:
+        elif choice ==3:
+        elif choice ==4:
+        elif choice ==5:
+        elif choice ==6:
+        elif choice ==7:
+
+
+def memberLogin():
     print("1. login as existing member")
     print("2. become new member")
     choice = 0
@@ -103,12 +174,12 @@ def login():
     
     return mID
 
-def memberMenu():
-    print("Welcome to your Dashboard, here are your options:")
+def printMemberMenu():
+    print("Welcome to your Dashboard, here are your options:\n")
     print("1. Update Username\n")
 
     print("2. View Weight Goal")
-    print("3. Update Weight Goal")
+    print("3. Update Weight Goal\n")
 
     print("4. View Health Metrics")
     print("5. Add Health Metric")
@@ -132,12 +203,25 @@ def memberMenu():
     print("19. Join A Fitness Class")
     print("20. Leave a Fitness Class\n")
 
-    choice =0
-    while choice < 1 or choice > 21:
-        choice = int(input("Enter a valid choice: "))
+    print("21. View Menu Again")
+    print("0. Exit menu\n")
 
-    return choice
+def printTrainerMenu():
+    print("1. View All Member Profiles")
+    print("2. View Member Profiles by ID#")
+    print("3. View Member Profiles by Name")
+    print("4. Add Session Opening")
+    print("5. Remove Session Opening\n")
+    print("0. View Menu Again")
 
+def printAdminMenu():
+    print("1. Create New Room Booking")
+    print("2. Remove Room Booking")
+    print("3. Check All Equipment")
+    print("4. Check Equipment by ID#")
+    print("5. Update Class Schedules")
+    print("6. Create Bill")
+    print("7. View Menu Again\n")
 
 control()
 

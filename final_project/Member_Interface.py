@@ -69,7 +69,7 @@ def viewGoals(uid, cursor):
 
 def addGoal(uid, cursor):
     description = input("Enter new goal description: ")
-    q = f"insert into goals (member_id, description) values ({uid}, {description})"
+    q = f"insert into goals (member_id, description) values ({uid}, '{description}')"
     cursor.execute(q)
     print("Goal added")
 
@@ -88,7 +88,7 @@ def viewExercises(uid, cursor):
 
 def addExercise(uid, cursor):
     eName = input("Enter exercise name: ")
-    q = f"insert into exercises (member_id, description) values ({uid}, {eName})"
+    q = f"insert into exercises (member_id, description) values ({uid}, '{eName}')"
     cursor.execute(q)
     print("Exercise added\n")
 

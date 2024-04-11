@@ -10,7 +10,7 @@ create table Trainers(
 	username varchar(255) not null
 );
 
-create table Administrators(
+create table Admins(
 	Admin_id serial primary key,
 	username varchar(255) not null
 );
