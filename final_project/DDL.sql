@@ -29,26 +29,26 @@ create table Goals(
 	description text
 );
 
-create table Exercise(
+create table Exercises(
 	exercise_id serial primary key,
 	member_id int not null references Members(member_id),
 	description text
 );
 
-create table Availability(
+create table Availabilities(
 	session_id serial primary key,
 	trainer_id int references Trainers(trainer_id),
 	available_time date not null
 );
 
-create table PT_Session(
+create table PT_Sessions(
 	session_id serial primary key,
 	trainer_id int references Trainers(trainer_id),
 	member_id int references Members(member_id),
 	session_time date not null
 );
 
-create table Fitness_Class(
+create table Fitness_Classes(
 	class_id serial primary key,
 	trainer_id int references Trainers(trainer_id),
 	class_name varchar(255) not null,
