@@ -1,6 +1,7 @@
 import psycopg2 # library to interact with postgresql
 from Member_Interface import *
 from Trainer_Interface import *
+from Admin_Interface import *
 
 dbPW = "heying" #your postgresql password
 
@@ -39,7 +40,7 @@ def memberInterface():
     while True:
 
         choice = -1 
-        while choice < 0 or choice > 20:
+        while choice < 0 or choice > 23:
             choice = int(input("Enter a valid choice: "))
     
         if choice ==0:
@@ -72,7 +73,7 @@ def memberInterface():
         elif choice ==13:
             viewAvailableSessions(cursor)
         elif choice ==14:
-            viewPTSessions(mid)
+            viewPTSessions(mid, cursor)
         elif choice ==15:
             bookPTSession(mid, cursor)
         elif choice ==16:
@@ -107,7 +108,7 @@ def trainerInterface():
     while True:
         
         choice = -1 
-        while choice < 0 or choice > 5:
+        while choice < 0 or choice > 7:
             choice = int(input("Enter a valid choice: "))
 
         if choice ==0:
@@ -120,9 +121,13 @@ def trainerInterface():
         elif choice ==3:
             viewMembersNames(cursor)
         elif choice ==4:
+            viewMySessions(tid, cursor)
+        elif choice ==5:
             addSession(tid, cursor)
-        else:
+        elif choice ==6:
             removeSession(tid, cursor)
+        else:
+            printTrainerMenu()
 
 def adminInterface():
     global cursor
@@ -139,7 +144,7 @@ def adminInterface():
     while True:
         
         choice = -1 
-        while choice < 0 or choice > 5:
+        while choice < 0 or choice > 9:
             choice = int(input("Enter a valid choice: ")) 
         
         if choice ==0:
@@ -156,12 +161,13 @@ def adminInterface():
         elif choice ==5:
             checkEquipmentID(cursor)
         elif choice ==6:
-            updateSchedules(cursor)
+            viewClasses(cursor)
         elif choice ==7:
+            updateSchedules(cursor)
+        elif choice ==8:
             createBill(cursor)
         else:
             printAdminMenu()
-
 
 def memberLogin():
     print("1. login as existing member")
@@ -225,9 +231,11 @@ def printTrainerMenu():
     print("1. View All Member Profiles")
     print("2. View Member Profiles by ID#")
     print("3. View Member Profiles by Name")
-    print("4. Add Session Opening")
-    print("5. Remove Session Opening\n")
-    print("0. View Menu Again")
+    print("4. View Your session openings")
+    print("5. Add Session Opening")
+    print("6. Remove Session Opening")
+    print("7. View Menu Again")
+    print("0. Exit Trainer Menu\n")
 
 def printAdminMenu():
     print("1, View All Bookings")
@@ -235,9 +243,11 @@ def printAdminMenu():
     print("3. Remove Room Booking")
     print("4. Check All Equipment")
     print("5. Check Equipment by ID#")
-    print("6. Update Class Schedules")
-    print("7. Create Bill")
-    print("8. View Menu Again\n")
+    print("6. View Class Schedules")
+    print("7. Update Class Schedules")
+    print("8. Create Bill")
+    print("9. View Menu Again")
+    print("0. Exit Admin Menu\n")
 
 control()
 

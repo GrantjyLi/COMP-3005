@@ -12,6 +12,16 @@ def viewMembersNames(cursor):
     q = f"select * from members where username = '{name}'"
     printMembers(q, cursor)
 
+def viewMySessions(tid, cursor):
+    q = f"select session_id, available_time from availabilities where trainer_id = '{tid}'"
+    cursor.execute(q)
+    
+    data = cursor.fetchall()
+
+    for a in data:
+        print(f"Session ID#: {a[0]}")
+        print(f"Availability time: {a[1]}\n")
+
 def addSession(tid, cursor):
     newDate = input("Enter new session date (yyyy-mm-dd): ")
     q = f"insert into availabilities (trainer_id, available_time) values ({tid}, '{newDate}')"

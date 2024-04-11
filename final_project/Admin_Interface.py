@@ -34,16 +34,6 @@ def checkEquipmentID(cursor):
     printEquipment(q, cursor)
 
 def updateSchedules(cursor):
-    q = f"select * from fitness_classes"
-    cursor.execute(q)
-    data = cursor.fetchall()
-
-    for c in data:
-        print(f"Class ID#: {c[0]}")
-        print(f"Trainer #: {c[1]}")
-        print(f"Class Name: {c[2]}")
-        print(f"Class date: {c[3]}\n")
-    
     bid = int(input("Enter the class ID# to update: "))
     date = input("New date (yyyy-mm-dd): ")
 
@@ -53,7 +43,7 @@ def updateSchedules(cursor):
 
 def createBill(cursor):
     mid = int(input("Billing member ID#: "))
-    amount = int(input("Bill amount $: "))
+    amount = float(input("Bill amount $: "))
     date = input("Bill due date (yyyy-mm-dd): ")
     description = input("Bill Description: ")
     

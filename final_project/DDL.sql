@@ -81,7 +81,6 @@ create table Billings(
 create table Payments(
 	payment_id serial primary key,
 	member_id int not null references Members(member_id),
-	bill_id int not null references Billings(bill_id),
 	amount real not null,
 	payment_date date not null
 );

@@ -13,7 +13,7 @@ def getUserID(username, userType, cursor):
     cursor.execute(q)
     return cursor.fetchone()[0]
 
-def addMember(username, weightGoal, goadDate):
+def addMember(username, weightGoal, goadDate, cursor):
     q = f"insert into members(username, weight_goal, time_goal) values ('{username}',{weightGoal},'{goadDate}')"
     cursor.execute(q)
     print("Profile added\n")
@@ -27,24 +27,25 @@ def updateUsername(uid, cursor):
 def viewWeightGoal(uid, cursor):
     q = f"select weight_goal, time_goal from members where member_id = {uid}"
     cursor.execute(q)
-    data = cursor.fetone()
+    data = cursor.fetchone()
     print(f"Weight goal: {data[0]}")
     print(f"Goal date: {data[1]}\n")
 
 def updateWeightGoal(uid, cursor):
     newWeight = int(input("Enter new Weight goal (lbs): "))
     newDate = input("Enter new weight goal date (yyyy-mm-dd): ")
-    q = f"update members set weight_goal = {newWeight}, time_goal = {newDate} where member_id = {uid}"
+    q = f"update members set weight_goal = {newWeight}, time_goal = '{newDate}' where member_id = {uid}"
     cursor.execute(q)
     print("Weight goal updated\n")
 
 def viewHealthMetrics(uid, cursor):
-    q = f"select metric_type, metric_value, date_measured from health_metrics where member_id = {uid}"
+    q = f"select metric_id, metric_type, metric_value, date_measured from health_metrics where member_id = {uid}"
     cursor.execute(q)
     for i in cursor.fetchall():
-        print(f"metric unit: {i[0]}")
-        print(f"metric value: {i[1]}")
-        print(f"metric date: {i[2]}\n")
+        print(f"metric ID#: {i[0]}")
+        print(f"metric unit: {i[1]}")
+        print(f"metric value: {i[2]}")
+        print(f"metric date: {i[3]}\n")
 
 def addHealthMetric(uid, cursor):
     newMType = input("Enter new metric type: ")
@@ -106,7 +107,7 @@ def viewAvailableSessions(cursor):
         print(f"trainer ID#: {i[1]}")
         print(f"Slot date: {i[2]}\n")
 
-def viewPTSessions(uid):
+def viewPTSessions(uid, cursor):
     q = f"select session_id, trainer_id, session_time from pt_sessions where member_id = {uid}"
     cursor.execute(q)
     for i in cursor.fetchall():
@@ -138,12 +139,12 @@ def bookPTSession(uid, cursor):
 
 def leavePTSession(uid, cursor): 
     sid = int(input("Enter the session ID#: "))
-    q = f"select trainer_id, session_time from pt_sessions where session_id = {sid} and member_id = {mid} limit 1"
+    q = f"select trainer_id, session_time from pt_sessions where session_id = {sid} and member_id = {uid} limit 1"
     cursor.execute(q)
     data = cursor.fetchone()
 
     if data[0] != None:
-        q = f"delete from pt_sessions where session_id = {sid} and member_id = {mid}"
+        q = f"delete from pt_sessions where session_id = {sid} and member_id = {uid}"
         cursor.execute(q)
         trainerID = data[0]
         time = data[1]
@@ -154,7 +155,7 @@ def leavePTSession(uid, cursor):
     print("Session removed\n")
 
 def viewClasses(cursor):
-    q = f"select class_name, class_id, trainer_id, class_time from fitness_classes"
+    q = f"select class_id, class_name, trainer_id, class_time from fitness_classes"
     cursor.execute(q)
     for i in cursor.fetchall():
         print(f"Class ID#: {i[0]}")
@@ -163,7 +164,7 @@ def viewClasses(cursor):
         print(f"Class date: {i[3]}\n")
 
 def viewEnrolledClasses(uid, cursor):
-    q = f"select class_name, class_id, trainer_id, class_time from fitness_classes where {uid} = any (member_ids)"
+    q = f"select class_id, class_name, trainer_id, class_time from fitness_classes where {uid} = any (member_ids)"
     cursor.execute(q)
     for i in cursor.fetchall():
         print(f"Class ID#: {i[0]}")
@@ -184,8 +185,28 @@ def leaveClass(uid, cursor):
     print(f"You left class {cid}")
 
 def viewBills(uid, cursor):
-    q = f"select * from billings where memerb_id = {uid}"
+    q = f"select bill_id, amount, bill_date, description from billings where member_id = {uid}"
     cursor.execute(q)
+    data = cursor.fetchall()
+
+    for b in data:
+        print(f"Bill ID#: {b[0]}")
+        print(f"Bill Amount: ${b[1]}")
+        print(f"Bill date: {b[2]}")
+        print(f"Bill description: {b[3]}\n")
 
 def payBills(uid, cursor):
-    print({""})
+    bid = int(input("Pay which bill ID#: "))
+    date = input("What is the date of payment (yyyy-mm-dd): ")
+
+    q = f"select amount from billings where bill_id = {bid} and member_id = {uid}"
+    cursor.execute(q)
+
+    cost = cursor.fetchone()[0]
+
+    q = f"delete from billings where bill_id = {bid} and member_id = {uid}"
+    cursor.execute(q)
+
+    q = f"insert into payments(member_id, amount, payment_date) values({uid}, {cost}, '{date}')"
+    cursor.execute(q)
+    print("Bill payed\n")

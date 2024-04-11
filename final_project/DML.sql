@@ -67,9 +67,9 @@ values
 	(2, 39.99, '2024-04-09', 'monthly membership fee')
 ;
 
-insert into payments(member_id, bill_id, payment_date, amount)
+insert into payments(member_id, amount, payment_date)
 values
-	(1, 1, '2024-04-09', 39.99)
+	(1, 39.99, '2024-04-09')
 ;
 
 insert into equipment(equipment_name, maintenance_cost, maintenance_date)
