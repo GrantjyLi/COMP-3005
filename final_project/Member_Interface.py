@@ -182,3 +182,10 @@ def leaveClass(uid, cursor):
     q = f"update fitness_classes set member_ids = array_remove(member_ids, {uid}) where class_id = {cid}"
     cursor.execute(q)
     print(f"You left class {cid}")
+
+def viewBills(uid, cursor):
+    q = f"select * from billings where memerb_id = {uid}"
+    cursor.execute(q)
+
+def payBills(uid, cursor):
+    print({""})

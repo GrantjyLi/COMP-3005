@@ -85,6 +85,10 @@ def memberInterface():
             joinClass(mid, cursor)
         elif choice ==20:
             leaveClass(mid, cursor)
+        elif choice ==21:
+            viewBills(mid, cursor)
+        elif choice ==22:
+            payBills(mid, cursor)
         else:
             printMemberMenu()
 
@@ -120,7 +124,6 @@ def trainerInterface():
         else:
             removeSession(tid, cursor)
 
-
 def adminInterface():
     global cursor
 
@@ -143,12 +146,21 @@ def adminInterface():
             print("Exiting Admin Menu\n")
             return
         elif choice ==1:
+            viewBookings(cursor)
         elif choice ==2:
+            createBooking(cursor)
         elif choice ==3:
+            removeBooking(cursor)
         elif choice ==4:
+            checkEquipment(cursor)
         elif choice ==5:
+            checkEquipmentID(cursor)
         elif choice ==6:
+            updateSchedules(cursor)
         elif choice ==7:
+            createBill(cursor)
+        else:
+            printAdminMenu()
 
 
 def memberLogin():
@@ -203,7 +215,10 @@ def printMemberMenu():
     print("19. Join A Fitness Class")
     print("20. Leave a Fitness Class\n")
 
-    print("21. View Menu Again")
+    print("21. View Bills")
+    print("22. Pay Bills\n")
+
+    print("23. View Menu Again")
     print("0. Exit menu\n")
 
 def printTrainerMenu():
@@ -215,13 +230,14 @@ def printTrainerMenu():
     print("0. View Menu Again")
 
 def printAdminMenu():
-    print("1. Create New Room Booking")
-    print("2. Remove Room Booking")
-    print("3. Check All Equipment")
-    print("4. Check Equipment by ID#")
-    print("5. Update Class Schedules")
-    print("6. Create Bill")
-    print("7. View Menu Again\n")
+    print("1, View All Bookings")
+    print("2. Create New Room Booking")
+    print("3. Remove Room Booking")
+    print("4. Check All Equipment")
+    print("5. Check Equipment by ID#")
+    print("6. Update Class Schedules")
+    print("7. Create Bill")
+    print("8. View Menu Again\n")
 
 control()
 
