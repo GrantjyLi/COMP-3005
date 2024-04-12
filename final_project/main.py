@@ -3,9 +3,10 @@ from Member_Interface import *
 from Trainer_Interface import *
 from Admin_Interface import *
 
-dbPW = "heying" #your postgresql password
+dbPW = "" #your postgresql password
+databasename = "Final_Project" # your postgresql database name 
 
-connection = psycopg2.connect(host = "localhost", dbname = "Final_Project", user = "postgres", password = dbPW, port = "5432")
+connection = psycopg2.connect(host = "localhost", dbname = databasename, user = "postgres", password = dbPW, port = "5432")
 cursor = connection.cursor()
 
 def control():
