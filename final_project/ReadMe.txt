@@ -4,7 +4,7 @@ Comp 3005 final project that simulates a health & fitness club management system
 connected to a postgresql database 
 
 Video Demo:
-https://youtu.be/zTOX0Qv5CZU
+https://youtu.be/fzKifNSt9Ds
 
 Launch instructions:
 
