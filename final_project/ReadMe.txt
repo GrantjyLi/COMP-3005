@@ -8,6 +8,8 @@ https://youtu.be/fzKifNSt9Ds
 
 Launch instructions:
 
+First create a postgresql database in a program of your choice
+
 To initialize the program, first create the 3 types of users: Members, Trainers, Admins.
 Then execute the the rest of the DDL to create all other tables.
 
